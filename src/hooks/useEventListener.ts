@@ -69,11 +69,21 @@ function useEventListener<
     // Create event listener that calls handler function stored in ref
     const listener: typeof handler = (event) => savedHandler.current(event);
 
-    targetElement.addEventListener(eventName, listener, options);
+    const shadowHost = document.getElementById('shadow-host');
+
+    document.addEventListener.bind(shadowHost!.shadowRoot)(
+      eventName,
+      listener,
+      options,
+    );
 
     // Remove event listener on cleanup
     return () => {
-      targetElement.removeEventListener(eventName, listener, options);
+      document.removeEventListener.bind(shadowHost!.shadowRoot)(
+        eventName,
+        listener,
+        options,
+      );
     };
   }, [eventName, element, options]);
 }
