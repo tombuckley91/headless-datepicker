@@ -71,19 +71,29 @@ function useEventListener<
 
     const shadowHost = document.getElementById('shadow-host');
 
-    document.addEventListener.bind(shadowHost!.shadowRoot)(
-      eventName,
-      listener,
-      options,
-    );
-
-    // Remove event listener on cleanup
-    return () => {
-      document.removeEventListener.bind(shadowHost!.shadowRoot)(
+    if (shadowHost) {
+      document.addEventListener.bind(shadowHost.shadowRoot)(
         eventName,
         listener,
         options,
       );
+    } else {
+      document.addEventListener(eventName, listener, options);
+    }
+
+    // Remove event listener on cleanup
+    return () => {
+      const shadowHost = document.getElementById('shadow-host');
+
+      if (shadowHost) {
+        document.removeEventListener.bind(shadowHost.shadowRoot)(
+          eventName,
+          listener,
+          options,
+        );
+      } else {
+        document.removeEventListener(eventName, listener, options);
+      }
     };
   }, [eventName, element, options]);
 }

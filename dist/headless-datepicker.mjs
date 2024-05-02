@@ -1,5 +1,5 @@
 import ee, { createContext as _, useContext as x, useEffect as g, Fragment as V, isValidElement as ne, cloneElement as re, createElement as te, forwardRef as Y, useLayoutEffect as q, useRef as v, useId as oe, useMemo as M, useState as U, useCallback as se, useReducer as ie } from "react";
-import { jsx as G } from "react/jsx-runtime";
+import { jsx as B } from "react/jsx-runtime";
 import { offset as ce, flip as ae, shift as ue, useFloating as de, autoUpdate as le } from "@floating-ui/react-dom";
 import { isValid as fe, format as pe, parse as ye, startOfMonth as me, endOfMonth as he, startOfToday as ke, startOfDay as ge, eachDayOfInterval as we, addDays as H, isEqual as ve } from "date-fns";
 function R(e, t) {
@@ -9,7 +9,7 @@ function R(e, t) {
   }
   throw new Error("Invalid match value");
 }
-function T(e, t) {
+function E(e, t) {
   return (e % t + t) % t;
 }
 const De = (e, { type: t, payload: r }) => {
@@ -165,7 +165,7 @@ function S(e, t) {
         day: () => ({
           ...e,
           year: i === 1 ? s - 1 : s,
-          month: T(i - 2, 12) + 1
+          month: E(i - 2, 12) + 1
         }),
         month: () => ({
           ...e,
@@ -269,9 +269,9 @@ function S(e, t) {
       throw new Error("Invalid action " + t.action);
   }
 }
-const B = _(null);
+const G = _(null);
 function be() {
-  const e = x(B);
+  const e = x(G);
   if (!e)
     throw new Error("You need to use component inside Datepicker");
   return e;
@@ -377,7 +377,7 @@ function O(e) {
   return Y(e);
 }
 const W = typeof window < "u" ? q : g;
-function Te(e, t, r, n) {
+function Ee(e, t, r, n) {
   const o = v(t);
   W(() => {
     o.current = t;
@@ -386,21 +386,22 @@ function Te(e, t, r, n) {
     if (!(i && i.addEventListener))
       return;
     const s = (c) => o.current(c), a = document.getElementById("shadow-host");
-    return document.addEventListener.bind(a.shadowRoot)(
+    return a ? document.addEventListener.bind(a.shadowRoot)(
       e,
       s,
       n
-    ), () => {
-      document.removeEventListener.bind(a.shadowRoot)(
+    ) : document.addEventListener(e, s, n), () => {
+      const c = document.getElementById("shadow-host");
+      c ? document.removeEventListener.bind(c.shadowRoot)(
         e,
         s,
         n
-      );
+      ) : document.removeEventListener(e, s, n);
     };
   }, [e, r, n]);
 }
-function Ee(e, t) {
-  Te("mousedown", (r) => {
+function Te(e, t) {
+  Ee("mousedown", (r) => {
     (Array.isArray(e) ? e : [e]).some((n) => {
       if (n === void 0)
         return !1;
@@ -453,14 +454,14 @@ const Ae = "div", xe = [
         payload: { action: `close${d}` }
       });
     };
-    Ee([L.floating, h], X);
+    Te([L.floating, h], X);
     const Z = {
       style: {
         ...o,
         ...h != null && h.current ? Q : {}
       }
     };
-    return /* @__PURE__ */ G(
+    return /* @__PURE__ */ B(
       A.Provider,
       {
         value: M(
@@ -646,7 +647,7 @@ const Re = "div", Se = O(
       n
     );
   }
-), E = {
+), T = {
   dayNames: [
     "Sunday",
     "Monday",
@@ -693,7 +694,7 @@ const Re = "div", Se = O(
   },
   months: ({ type: e, month: t }) => {
     const r = (/* @__PURE__ */ new Date()).getMonth();
-    return [...E.monthNames.keys()].map((n) => ({
+    return [...T.monthNames.keys()].map((n) => ({
       type: e,
       key: e + n,
       isToday: r === n,
@@ -702,13 +703,13 @@ const Re = "div", Se = O(
       isDisabled: !1,
       disabled: !1,
       value: n + 1,
-      text: E.monthNames[n]
+      text: T.monthNames[n]
     }));
   },
   days: ({ type: e, month: t, startOfWeek: r, year: n, value: o }) => {
-    const i = new Date(n, t - 1, 1), s = me(i), a = he(i), c = T(r - 1, 7), l = ke().getTime(), p = o ? ge(o).getTime() : 0;
-    return E.dayNames.map((u, m) => {
-      const d = T(r + m, 7);
+    const i = new Date(n, t - 1, 1), s = me(i), a = he(i), c = E(r - 1, 7), l = ke().getTime(), p = o ? ge(o).getTime() : 0;
+    return T.dayNames.map((u, m) => {
+      const d = E(r + m, 7);
       return {
         type: e,
         key: "weekday" + d,
@@ -718,12 +719,12 @@ const Re = "div", Se = O(
         isDisabled: !1,
         disabled: !1,
         value: m,
-        text: E.dayNames[d]
+        text: T.dayNames[d]
       };
     }).concat(
       we({
-        start: H(s, -T(s.getDay() - r, 7)),
-        end: H(a, T(c - a.getDay(), 7))
+        start: H(s, -E(s.getDay() - r, 7)),
+        end: H(a, E(c - a.getDay(), 7))
       }).map((u) => ({
         type: e,
         key: u.toString(),
@@ -767,7 +768,7 @@ const Re = "div", Se = O(
     onChange: r,
     disabledKeyboardNavigation: n,
     disabled: o = !1,
-    config: i = E,
+    config: i = T,
     startOfWeek: s = 0,
     ...a
   }, c) => {
@@ -803,13 +804,13 @@ const Re = "div", Se = O(
       d({ type: "defaultChanged", payload: { disabled: o } });
     }, [o]);
     const w = {};
-    return /* @__PURE__ */ G(B.Provider, { value: { state: m, dispatch: d }, children: b(w, a, J(m), je, c) });
+    return /* @__PURE__ */ B(G.Provider, { value: { state: m, dispatch: d }, children: b(w, a, J(m), je, c) });
   }
 );
 function _e(e, t) {
   return e === t || e !== null && t !== null && ve(e, t);
 }
-const Ge = Object.assign($e, {
+const Be = Object.assign($e, {
   Picker: Pe,
   Input: Le,
   Button: Ce,
@@ -817,6 +818,6 @@ const Ge = Object.assign($e, {
   Item: Ne
 });
 export {
-  Ge as Datepicker,
-  E as config
+  Be as Datepicker,
+  T as config
 };
